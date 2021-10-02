@@ -1,6 +1,6 @@
 import Head from 'next/head'
 //import { getJSONPost } from '../../lib/posts' 
-import { getPost } from '../../lib/posts' 
+import { getPost, getSlugs } from '../../lib/posts' 
 
 //EXAMPLE READING JSON FROM FILE SYSTEM
 // export async function getStaticProps () {
@@ -13,12 +13,18 @@ import { getPost } from '../../lib/posts'
 // }
 
 export async function getStaticPaths () {
+  const slugs = await getSlugs()
   return {
-    paths: [
-       { params: { slug: "first-post"}},
-       { params: { slug: "second-post"}},
-       { params: { slug: "third-post"}}
-    ],
+    //Map from slug function
+    paths: slugs.map(slug => ({ 
+      params:  { slug } 
+    })),
+    //Manually add slugs
+    // paths: [
+    //    { params: { slug: "first-post"}},
+    //    { params: { slug: "second-post"}},
+    //    { params: { slug: "third-post"}}
+    // ],
     fallback: false
   }
 }
